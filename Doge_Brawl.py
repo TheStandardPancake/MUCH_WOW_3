@@ -2,7 +2,7 @@
 
 import pygame
 from pygame.locals import *
-import math
+import random
 
 width = 1280
 height = 720
@@ -19,15 +19,25 @@ def main():
     window = pygame.display.set_mode((width,height))
     pygame.display.set_caption("Doge Brawl")
 
+    #powermode
+    global powermode
+    powermode = False
+
 
     #spawning the sprites
+    global doge
     doge = Doge()
     doge.rect.x = 500
     doge.rect.y = 410
 
+    global elmo
     elmo = Elmo()
     elmo.rect.x = 700
     elmo.rect.y = 410
+
+    global bottle
+    bottle = powerbottle()
+    bottle.rect = (random.randrange(0,1265),random.randrange(60,250))
 
     while True:
         window.blit(pygame.image.load('backdrop.png'),(0,0))
@@ -35,6 +45,9 @@ def main():
         window.blit(doge.image,doge.rect)
         elmo.update()
         window.blit(elmo.image,elmo.rect)
+        bottle.update()
+        if pygame.sprite.collide_mask(bottle, elmo) or pygame.sprite.collide_mask(bottle, doge):
+            bottle.rect = (random.randrange(0,1265),random.randrange(60,250))
         required()
         pygame.display.update()
 
@@ -107,14 +120,22 @@ class Doge(pygame.sprite.Sprite):
         #moving
         global gravity
         global pressed_once
-        if self.rect.y <= 50:
+        if self.rect.y <= 230 and pygame.key.get_pressed()[pygame.K_f]:
+            gravity = -1
+        elif self.rect.y <= 50:
             gravity = -1
         if self.rect.y >= 410:
             gravity = 1
-        if pygame.key.get_pressed()[pygame.K_d] and self.rect.x < 1241:
+        if pygame.key.get_pressed()[pygame.K_d] and pygame.key.get_pressed()[pygame.K_f] and self.rect.x < 1241:
+            self.rect.x += 5
+            Orient = 0
+        elif pygame.key.get_pressed()[pygame.K_d] and self.rect.x < 1241:
             self.rect.x += 10
             Orient = 0
-        if pygame.key.get_pressed()[pygame.K_a] and self.rect.x > 0:
+        if pygame.key.get_pressed()[pygame.K_a] and pygame.key.get_pressed()[pygame.K_f] and self.rect.x > 0:
+            self.rect.x -= 5
+            Orient = 1
+        elif pygame.key.get_pressed()[pygame.K_a] and self.rect.x > 0:
             self.rect.x -= 10
             Orient = 1
         if pygame.key.get_pressed()[pygame.K_w] and self.rect.y <= 410 and self.rect.y >= 50 and pressed_once == False:
@@ -122,19 +143,22 @@ class Doge(pygame.sprite.Sprite):
         elif self.rect.y < 410:
             pressed_once = True
             self.rect.y += 20
-        if pygame.key.get_pressed()[pygame.K_s] and self.rect.y < 410:
-            pass
-
         if self.rect.y >= 410:
             self.rect.y = 410
             pressed_once = False
 
 
         #checking Orientation
-        if Orient == 1:
+        if Orient == 1 and pygame.key.get_pressed()[pygame.K_f]:
+            Anim1 = "LattackDoge.png"
+            Anim2 = "LattackDoge.png"
+        elif Orient == 1:
             Anim1 = skinL
             Anim2 = skinL1
-        if Orient == 0:
+        if Orient == 0 and pygame.key.get_pressed()[pygame.K_f]:
+            Anim1 = "attackDoge.png"
+            Anim2 = "attackDoge.png"
+        elif Orient == 0:
             Anim1 = skinR
             Anim2 = skinR1
 
@@ -207,14 +231,22 @@ class Elmo(pygame.sprite.Sprite):
         #moving
         global Egravity
         global Epressed_once
-        if self.rect.y <= 50:
+        if self.rect.y <= 230 and pygame.key.get_pressed()[pygame.K_RCTRL]:
+            Egravity = -1
+        elif self.rect.y <= 50:
             Egravity = -1
         if self.rect.y >= 410:
             Egravity = 1
-        if pygame.key.get_pressed()[pygame.K_RIGHT] and self.rect.x < 1241:
+        if pygame.key.get_pressed()[pygame.K_RIGHT] and pygame.key.get_pressed()[pygame.K_RCTRL] and self.rect.x < 1241:
+            self.rect.x += 5
+            EOrient = 0
+        elif pygame.key.get_pressed()[pygame.K_RIGHT] and self.rect.x < 1241:
             self.rect.x += 10
             EOrient = 0
-        if pygame.key.get_pressed()[pygame.K_LEFT] and self.rect.x > 0:
+        if pygame.key.get_pressed()[pygame.K_LEFT] and pygame.key.get_pressed()[pygame.K_RCTRL] and self.rect.x > 0:
+            self.rect.x -= 5
+            EOrient = 1
+        elif pygame.key.get_pressed()[pygame.K_LEFT] and self.rect.x > 0:
             self.rect.x -= 10
             EOrient = 1
         if pygame.key.get_pressed()[pygame.K_UP] and self.rect.y <= 410 and self.rect.y >= 50 and Epressed_once == False:
@@ -222,21 +254,36 @@ class Elmo(pygame.sprite.Sprite):
         elif self.rect.y < 410:
             Epressed_once = True
             self.rect.y += 20
-        if pygame.key.get_pressed()[pygame.K_DOWN] and self.rect.y < 410:
-            pass
-
         if self.rect.y >= 410:
             self.rect.y = 410
             Epressed_once = False
 
 
         #checking Orientation
-        if EOrient == 1:
+        if EOrient == 1 and pygame.key.get_pressed()[pygame.K_RCTRL]:
+            EAnim1 = "attackElmo.png"
+            EAnim2 = "attackElmo.png"
+        elif EOrient == 1:
             EAnim1 = EskinL
             EAnim2 = EskinL1
-        if EOrient == 0:
+        if EOrient == 0 and pygame.key.get_pressed()[pygame.K_RCTRL]:
+            EAnim1 = "RattackElmo.png"
+            EAnim2 = "RattackElmo.png"
+        elif EOrient == 0:
             EAnim1 = EskinR
             EAnim2 = EskinR1
+
+#~~~~~~~~~~~~~~~~~~Inventing the combat system through powerup~~~~~~~~~~~~~~~~~~
+
+class powerbottle(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("powerbottle.png").convert_alpha()
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        global window
+        window.blit(self.image, self.rect)
 
 
 
