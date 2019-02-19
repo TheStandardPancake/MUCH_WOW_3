@@ -1,4 +1,4 @@
-#Thought that the third installment of MUCH WOW would be in 3D, lol no that's too hard. This time it's street fighter style. ~Boyd kirkman
+#Thought that the third installment of MUCH WOW would be in 3D, lol no that's too hard. This time it's super smash style. ~Boyd kirkman
 
 import pygame
 from pygame.locals import *
@@ -11,13 +11,28 @@ pygame.init()
 def required():
     if pygame.QUIT in [e.type for e in pygame.event.get()]:
         quit()
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~The Main Loop~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def main():
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~Title Screen~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def title():
     #setting the background
     global window
     window = pygame.display.set_mode((width,height))
-    pygame.display.set_caption("Doge Brawl")
+    pygame.display.set_caption("Super MUCH WOW: Ultimate")
+
+    #music
+    pygame.mixer.music.load("Battle.mp3")
+    pygame.mixer.music.play()
+
+    while True:
+        window.blit(pygame.image.load('Doge Brawl.png'),(0,0))
+        required()
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            main()
+        pygame.display.update()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~The Main Loop~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def main():
+    #music
+    pygame.mixer.music.load("Title.mp3")
+    pygame.mixer.music.play()
 
     #powermode
     global powermode
@@ -288,4 +303,4 @@ class powerbottle(pygame.sprite.Sprite):
 
 
 if __name__ == "__main__":
-    main()
+    title()
