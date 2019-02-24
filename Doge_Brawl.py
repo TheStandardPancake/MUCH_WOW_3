@@ -22,8 +22,29 @@ def title():
     pygame.mixer.music.load("Battle.mp3")
     pygame.mixer.music.play(-1)
 
+    #press space
+    blip = 0
+    blop = 0
+    space = pygame.image.load("PressSpace.png")
+    space1 = pygame.image.load("PressSpace1.png")
+    space2 = pygame.image.load("PressSpace2.png")
+    space3 = pygame.image.load("PressSpace3.png")
+
     while True:
         window.blit(pygame.image.load('Doge Brawl.png'),(0,0))
+        if blip == 3:
+            window.blit(space3,(width/2-200, height/2))
+            blip = 0
+        if blip == 2:
+            window.blit(space2,(width/2-200, height/2))
+        if blip == 1:
+            window.blit(space1,(width/2-200, height/2))
+        if blip == 0:
+            window.blit(space,(width/2-200, height/2))
+        if blop == 2:
+            blip += 1
+            blop = 0
+        blop += 1
         required()
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             main()
@@ -35,10 +56,8 @@ def main():
     pygame.mixer.music.play(-1)
     hit = pygame.mixer.Sound('hit.wav')
 
-    #powermode
-    global powermode
-    powermode = False
-
+    #Powerhits
+    modifier = 1
 
     #spawning the sprites
     global doge
@@ -62,14 +81,39 @@ def main():
         elmo.update()
         window.blit(elmo.image,elmo.rect)
         bottle.update()
+
+        #collision
         if pygame.sprite.collide_mask(bottle, elmo) or pygame.sprite.collide_mask(bottle, doge):
             bottle.rect = (random.randrange(0,1265),random.randrange(60,250))
-        if pygame.sprite.collide_mask(elmo, doge) and elmo.attack == 1:
+            modifier += 1
+        if pygame.sprite.collide_mask(elmo, doge) and elmo.attack == 1 and pygame.sprite.collide_mask(doge, elmo) and doge.attack == 1:
             pygame.mixer.Sound.play(hit)
             window.blit(pygame.image.load('hit.png'),doge.rect)
-        if pygame.sprite.collide_mask(doge, elmo) and doge.attack == 1:
+            window.blit(pygame.image.load('hit.png'),elmo.rect)
+            doge.rect.x += random.choice((10*modifier,-10*modifier))
+            doge.rect.y += random.choice((10*modifier,-10*modifier))
+            elmo.rect.x += random.choice((10*modifier,-10*modifier))
+            elmo.rect.y += random.choice((10*modifier,-10*modifier))
+        elif pygame.sprite.collide_mask(elmo, doge) and elmo.attack == 1:
+            pygame.mixer.Sound.play(hit)
+            window.blit(pygame.image.load('hit.png'),doge.rect)
+            doge.rect.x += random.choice((10*modifier,-10*modifier))
+            doge.rect.y += random.choice((10*modifier,-10*modifier))
+        elif pygame.sprite.collide_mask(doge, elmo) and doge.attack == 1:
             pygame.mixer.Sound.play(hit)
             window.blit(pygame.image.load('hit.png'),elmo.rect)
+            elmo.rect.x += random.choice((10*modifier,-10*modifier))
+            elmo.rect.y += random.choice((10*modifier,-10*modifier))
+
+        #Death:
+        if doge.rect.x >= 720 or doge.rect.x <= 57:
+            elmoWin()
+        if elmo.rect.x >= 720 or elmo.rect.x <= 57:
+            dogeWin()
+
+        #Rave
+        #window.blit(pygame.image.load("rave.png"),(0,0))
+
         required()
         pygame.display.update()
 
@@ -259,13 +303,13 @@ class Elmo(pygame.sprite.Sprite):
         #moving
         global Egravity
         global Epressed_once
-        if self.rect.y <= 230 and pygame.key.get_pressed()[pygame.K_RCTRL]:
+        if self.rect.y <= 230 and pygame.key.get_pressed()[pygame.K_PERIOD]:
             Egravity = -1
         elif self.rect.y <= 50:
             Egravity = -1
         if self.rect.y >= 410:
             Egravity = 1
-        if pygame.key.get_pressed()[pygame.K_RIGHT] and pygame.key.get_pressed()[pygame.K_RCTRL] and self.rect.x < 1241:
+        if pygame.key.get_pressed()[pygame.K_RIGHT] and pygame.key.get_pressed()[pygame.K_PERIOD] and self.rect.x < 1241:
             self.rect.x += 5
             EOrient = 0
         elif pygame.key.get_pressed()[pygame.K_RIGHT] and self.rect.x < 1241:
@@ -317,7 +361,19 @@ class powerbottle(pygame.sprite.Sprite):
         global window
         window.blit(self.image, self.rect)
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Doge Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+def dogeWin():
+    window.blit(pygame.image.blit("dogeWin.png"),(0,0))
+    if pygame.key.get_pressed()[pygame.SPACE]:
+        title()
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Elmo Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def elmoWin():
+    window.blit(pygame.image.blit("elmoWin.png"),(0,0))
+    if pygame.key.get_pressed()[pygame.SPACE]:
+        title()
 
 if __name__ == "__main__":
     title()
