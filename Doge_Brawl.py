@@ -364,14 +364,14 @@ class powerbottle(pygame.sprite.Sprite):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Doge Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def dogeWin():
-    window.blit(pygame.image.blit("dogeWin.png"),(0,0))
+    window.blit(pygame.image.load("dogeWin.png"),(0,0))
     if pygame.key.get_pressed()[pygame.SPACE]:
         title()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Elmo Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def elmoWin():
-    window.blit(pygame.image.blit("elmoWin.png"),(0,0))
+    window.blit(pygame.image.load("elmoWin.png"),(0,0))
     if pygame.key.get_pressed()[pygame.SPACE]:
         title()
 
