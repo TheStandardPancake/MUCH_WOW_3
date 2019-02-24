@@ -106,9 +106,9 @@ def main():
             elmo.rect.y += random.choice((10*modifier,-10*modifier))
 
         #Death:
-        if doge.rect.x >= 1280 or doge.rect.x <= 57:
+        if doge.rect.x >= 1280 or doge.rect.x <= -57:
             elmoWin()
-        if elmo.rect.x >= 1280 or elmo.rect.x <= 57:
+        if elmo.rect.x >= 1280 or elmo.rect.x <= -57:
             dogeWin()
 
         #Rave
