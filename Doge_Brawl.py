@@ -271,7 +271,7 @@ class Elmo(pygame.sprite.Sprite):
         elif pygame.key.get_pressed()[pygame.K_RIGHT] and self.rect.x < 1241:
             self.rect.x += 10
             EOrient = 0
-        if pygame.key.get_pressed()[pygame.K_LEFT] and pygame.key.get_pressed()[pygame.K_RCTRL] and self.rect.x > 0:
+        if pygame.key.get_pressed()[pygame.K_LEFT] and pygame.key.get_pressed()[pygame.K_PERIOD] and self.rect.x > 0:
             self.rect.x -= 5
             EOrient = 1
         elif pygame.key.get_pressed()[pygame.K_LEFT] and self.rect.x > 0:
@@ -288,7 +288,7 @@ class Elmo(pygame.sprite.Sprite):
 
 
         #checking Orientation
-        if EOrient == 1 and pygame.key.get_pressed()[pygame.K_RCTRL]:
+        if EOrient == 1 and pygame.key.get_pressed()[pygame.K_PERIOD]:
             EAnim1 = "attackElmo.png"
             EAnim2 = "attackElmo.png"
             self.attack = 1
@@ -296,7 +296,7 @@ class Elmo(pygame.sprite.Sprite):
             EAnim1 = EskinL
             EAnim2 = EskinL1
             self.attack = 0
-        if EOrient == 0 and pygame.key.get_pressed()[pygame.K_RCTRL]:
+        if EOrient == 0 and pygame.key.get_pressed()[pygame.K_PERIOD]:
             EAnim1 = "RattackElmo.png"
             EAnim2 = "RattackElmo.png"
             self.attack = 1
