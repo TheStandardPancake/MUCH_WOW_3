@@ -20,7 +20,7 @@ def title():
 
     #music
     pygame.mixer.music.load("Battle.mp3")
-    pygame.mixer.music.play()
+    pygame.mixer.music.play(-1)
 
     while True:
         window.blit(pygame.image.load('Doge Brawl.png'),(0,0))
@@ -32,7 +32,8 @@ def title():
 def main():
     #music
     pygame.mixer.music.load("Title.mp3")
-    pygame.mixer.music.play()
+    pygame.mixer.music.play(-1)
+    hit = pygame.mixer.Sound('hit.wav')
 
     #powermode
     global powermode
@@ -63,6 +64,12 @@ def main():
         bottle.update()
         if pygame.sprite.collide_mask(bottle, elmo) or pygame.sprite.collide_mask(bottle, doge):
             bottle.rect = (random.randrange(0,1265),random.randrange(60,250))
+        if pygame.sprite.collide_mask(elmo, doge) and elmo.attack == 1:
+            pygame.mixer.Sound.play(hit)
+            window.blit(pygame.image.load('hit.png'),doge.rect)
+        if pygame.sprite.collide_mask(doge, elmo) and doge.attack == 1:
+            pygame.mixer.Sound.play(hit)
+            window.blit(pygame.image.load('hit.png'),elmo.rect)
         required()
         pygame.display.update()
 
@@ -95,6 +102,7 @@ class Doge(pygame.sprite.Sprite):
         global pressed_once
         pressed_once = False
 
+        self.attack = 0
         self.image = pygame.image.load(skin).convert_alpha()
         self.rect = self.image.get_rect()
 
@@ -167,15 +175,19 @@ class Doge(pygame.sprite.Sprite):
         if Orient == 1 and pygame.key.get_pressed()[pygame.K_f]:
             Anim1 = "LattackDoge.png"
             Anim2 = "LattackDoge.png"
+            self.attack = 1
         elif Orient == 1:
             Anim1 = skinL
             Anim2 = skinL1
+            self.attack = 0
         if Orient == 0 and pygame.key.get_pressed()[pygame.K_f]:
             Anim1 = "attackDoge.png"
             Anim2 = "attackDoge.png"
+            self.attack = 1
         elif Orient == 0:
             Anim1 = skinR
             Anim2 = skinR1
+            self.attack = 0
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~Making the Elmo fighter~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -206,6 +218,7 @@ class Elmo(pygame.sprite.Sprite):
         global Epressed_once
         Epressed_once = False
 
+        self.attack = 0
         self.image = pygame.image.load(Eskin).convert_alpha()
         self.rect = self.image.get_rect()
 
@@ -278,15 +291,19 @@ class Elmo(pygame.sprite.Sprite):
         if EOrient == 1 and pygame.key.get_pressed()[pygame.K_RCTRL]:
             EAnim1 = "attackElmo.png"
             EAnim2 = "attackElmo.png"
+            self.attack = 1
         elif EOrient == 1:
             EAnim1 = EskinL
             EAnim2 = EskinL1
+            self.attack = 0
         if EOrient == 0 and pygame.key.get_pressed()[pygame.K_RCTRL]:
             EAnim1 = "RattackElmo.png"
             EAnim2 = "RattackElmo.png"
+            self.attack = 1
         elif EOrient == 0:
             EAnim1 = EskinR
             EAnim2 = EskinR1
+            self.attack = 0
 
 #~~~~~~~~~~~~~~~~~~Inventing the combat system through powerup~~~~~~~~~~~~~~~~~~
 
