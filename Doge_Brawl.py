@@ -74,7 +74,9 @@ def main():
     bottle = powerbottle()
     bottle.rect = (random.randrange(0,1265),random.randrange(60,250))
 
-    while True:
+    playing = True
+
+    while playing:
         window.blit(pygame.image.load('backdrop.png'),(0,0))
         doge.update()
         window.blit(doge.image,doge.rect)
@@ -362,18 +364,33 @@ class powerbottle(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Doge Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+global bamboozle
+bamboozle = 1
 def dogeWin():
-    window.blit(pygame.image.load("dogeWin.png"),(0,0))
+    global bamboozle
+    if bamboozle == 1:
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("victory.mp3")
+        pygame.mixer.music.play(-1)
+        bamboozle = 0
+    window.blit(pygame.image.load("elmoWin.png"),(0,0))
     if pygame.key.get_pressed()[pygame.K_SPACE]:
         title()
+        bamboozle = 1
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Elmo Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def elmoWin():
+    global bamboozle
+    if bamboozle == 1:
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("victory.mp3")
+        pygame.mixer.music.play(-1)
+        bamboozle = 0
     window.blit(pygame.image.load("elmoWin.png"),(0,0))
     if pygame.key.get_pressed()[pygame.K_SPACE]:
         title()
+        bamboozle = 1
 
 if __name__ == "__main__":
     title()
