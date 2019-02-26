@@ -106,9 +106,9 @@ def main():
             elmo.rect.y += random.choice((10*modifier,-10*modifier))
 
         #Death:
-        if doge.rect.x >= 1280 or doge.rect.x <= -57:
+        if doge.rect.x >= 1280 or doge.rect.x <= -55:
             elmoWin()
-        if elmo.rect.x >= 1280 or elmo.rect.x <= -57:
+        if elmo.rect.x >= 1280 or elmo.rect.x <= -55:
             dogeWin()
 
         #Rave
@@ -365,14 +365,14 @@ class powerbottle(pygame.sprite.Sprite):
 
 def dogeWin():
     window.blit(pygame.image.load("dogeWin.png"),(0,0))
-    if pygame.key.get_pressed()[pygame.SPACE]:
+    if pygame.key.get_pressed()[pygame.K_SPACE]:
         title()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Elmo Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def elmoWin():
     window.blit(pygame.image.load("elmoWin.png"),(0,0))
-    if pygame.key.get_pressed()[pygame.SPACE]:
+    if pygame.key.get_pressed()[pygame.K_SPACE]:
         title()
 
 if __name__ == "__main__":
