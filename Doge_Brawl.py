@@ -373,10 +373,11 @@ def dogeWin():
         pygame.mixer.music.load("victory.mp3")
         pygame.mixer.music.play(-1)
         bamboozle = 0
-    window.blit(pygame.image.load("elmoWin.png"),(0,0))
+    window.blit(pygame.image.load("dogeWin.png"),(0,0))
     if pygame.key.get_pressed()[pygame.K_SPACE]:
-        title()
         bamboozle = 1
+        title()
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Elmo Win~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -389,8 +390,9 @@ def elmoWin():
         bamboozle = 0
     window.blit(pygame.image.load("elmoWin.png"),(0,0))
     if pygame.key.get_pressed()[pygame.K_SPACE]:
-        title()
         bamboozle = 1
+        title()
+
 
 if __name__ == "__main__":
     title()
